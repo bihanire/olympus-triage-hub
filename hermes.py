@@ -1,4 +1,4 @@
-# HERMES: The Master Triage Glossary (v2.3 - Final Production Build)
+# HERMES: The Master Triage Glossary (v2.4 - Reliability Optimized)
 SAMSUNG_TRIAGE_DATA = {
     "Display & Touch (Top Tier Issue)": {
         "triggers": [
@@ -11,12 +11,12 @@ SAMSUNG_TRIAGE_DATA = {
             "1. CLEAN: Wipe screen with microfiber (prevents ghost touch).",
             "2. TEST: Dial *#0*# and run the 'TOUCH' grid test.",
             "3. CALIBRATION: Check if a screen protector is affecting sensitivity.",
-            "4. PHYSICAL: Check for 'purple ink' spots (internal OLED bleed). [View Reference](https://bit.ly/samsung-oled-bleed)"
+            "4. PHYSICAL: Check for 'purple ink' spots (internal OLED bleed)."
         ],
         "routing": "No Physical Damage -> TRANSTEL (ASC) | Cracked -> Paid Repair",
         "guidance": "Screen issues are our #1 volume. If hardware test fails without impact marks, reassure the client it is a manufacturing warranty matter."
     },
-    "Power, Battery & Charging (Tier 1)": {
+    "Power & Battery (Tier 1)": {
         "triggers": [
             "battery", "drain", "fast", "percentage", "power", "dead", "won't turn on", 
             "black screen", "logo", "restart", "charging", "charger", "not charging",
