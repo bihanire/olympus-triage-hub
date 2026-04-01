@@ -1,54 +1,65 @@
-# HERMES: Predictive Triage Logic Core
+# HERMES: The Master Triage Glossary (v2.0 - Transtel Data Optimized)
 SAMSUNG_TRIAGE_DATA = {
-    "Physical & Liquid Damage": {
+    "Display & Touch (Top Tier Issue)": {
         "triggers": [
-            "crack", "broken", "water", "liquid", "fell", "dropped", "shattered", 
-            "dent", "moisture", "screen", "sink", "rain", "smash", "glass", "display", "leak"
+            "lines", "unresponsive", "blurry", "touch", "sensing", "ghost", 
+            "pixel", "color", "flicker", "dots", "black", "dim", "dark", "lcd"
         ],
-        "warranty_status": "Out of Warranty (Physical/Liquid)",
+        "warranty_status": "Warranty Inspection Required (unless cracked)",
         "action_plan": [
-            "Inspect the Liquid Damage Indicator (LDI) in the SIM slot.",
-            "Document all impact points or moisture signs with clear photos.",
-            "Refer to the Repair Pricing Chart for out-of-warranty costs."
+            "1. CLEAN: Wipe screen with microfiber (prevents ghost touch).",
+            "2. TEST: Dial *#0*# and run the 'TOUCH' grid test.",
+            "3. CALIBRATION: Check if a screen protector is affecting sensitivity.",
+            "4. PHYSICAL: Check for 'purple ink' spots (indicates internal OLED bleed)."
         ],
-        "routing": "Refer to TRANSTEL (ASC) - Paid Repair",
-        "guidance": "Gently inform the customer that physical impact or liquid ingress voids the warranty. Provide the estimated cost from the pricing chart."
+        "routing": "No Physical Damage -> TRANSTEL (ASC) | Cracked -> Paid Repair",
+        "guidance": "Screen issues are the #1 complaint. If the hardware test fails without impact marks, reassure the client it is a warranty matter."
     },
-    "Power, Software & Security": {
+    "Power & Booting (Tier 1)": {
         "triggers": [
-            "power", "charging", "charger", "dead", "logo", "restart", "hang", 
-            "password", "lock", "frp", "pattern", "google", "account", "frozen", 
-            "slow", "off", "software", "update", "download", "version", "upgrade", "system"
+            "power", "dead", "won't turn on", "black screen", "logo", "restart", 
+            "itself", "stuck", "boot", "vibrates but no display", "dead boot"
         ],
-        "warranty_status": "Software Triage (In-Warranty Service)",
+        "warranty_status": "Pending L1 Triage",
         "action_plan": [
-            "Attempt a Force Restart: Hold Vol Down + Power for 15 seconds.",
-            "Check for available storage space (System updates require ~5GB free).",
-            "Ensure the device is connected to a stable Wi-Fi network (not mobile data).",
-            "Verify device ownership and loan status in the finance system."
+            "1. HARD RESET: Hold Vol Down + Power for 15-20 seconds.",
+            "2. CHARGE: Use a known good 25W Watu charger for 30 mins.",
+            "3. RECOVERY: Vol Up + Power (while connected to PC) to 'Wipe Cache Partition'."
+        ],
+        "routing": "Perform at Branch / If unresponsive -> SIMU HQ",
+        "guidance": "Often the device is just 'frozen'. A hard reset solves 60% of these cases on the spot."
+    },
+    "Software Updates & Network (Tier 2)": {
+        "triggers": [
+            "update", "software", "failed", "download", "upgrade", "version", 
+            "system", "error", "processing", "package", "internet", "wi-fi"
+        ],
+        "warranty_status": "Software Triage (In-Warranty)",
+        "action_plan": [
+            "1. NETWORK RESET: Settings > General Management > Reset > Reset Network Settings.",
+            "2. STORAGE: Verify at least 10GB of free space.",
+            "3. FACTORY RESET: If update persists in failing, perform a 'Reset to Factory Settings' (Back up data first!)."
         ],
         "routing": "Perform at Branch / Escalate to SIMU HQ",
-        "guidance": "Software issues and updates are usually handled on-site. Assure the client that we can resolve this without shipping the device if it's just a system glitch."
+        "guidance": "Most update failures are Network-related. Always reset network settings before attempting the download again."
     },
-    "Component & Technical Failure": {
-        "triggers": [
-            "lines", "touch", "sensing", "mic", "speaker", "network", "signal", 
-            "sim", "vibration", "camera", "volume", "earpiece", "bluetooth", "wi-fi", "pixel"
-        ],
-        "warranty_status": "Warranty Inspection Required",
+    "Security & Account Access": {
+        "triggers": ["password", "lock", "pattern", "forgot", "google", "frp", "account", "pin"],
+        "warranty_status": "L1 Software Service (HQ)",
         "action_plan": [
-            "Enter the Samsung Test Menu by dialing *#0*#.",
-            "Test the specific hardware component (Touch, Sensor, Speaker).",
-            "Verify the IMEI (*#06#) to ensure no system corruption."
+            "1. VERIFY: Check Watu loan status and client ID.",
+            "2. GSPN: Use authorized flashing tools for FRP/Lock removal.",
+            "3. MAINTENANCE: Enable Maintenance Mode to protect client privacy."
         ],
-        "routing": "Refer to TRANSTEL (ASC) - Warranty Claim",
-        "guidance": "Inform the customer we need a hardware diagnostic. If no physical damage is found, this is a standard manufacturing warranty claim."
+        "routing": "SIMU HQ (Software Specialist)",
+        "guidance": "This is a standard software resolution. It is not a hardware fault."
     }
 }
 
-PROCEDURES = {
-    "LDI Check": "Sticker in SIM slot: White = Dry. Red/Pink = Liquid contact confirmed.",
-    "Hardware Test": "Dial *#0*# in the phone app to access the Samsung internal testing suite.",
-    "Force Restart": "Hold Volume Down + Power simultaneously for 15 seconds until the logo appears.",
-    "Safe Mode": "Power Off > Hold Power > When 'Samsung' appears, hold Volume Down until boot."
+# QUICK LINKS FOR BRANCH ASSISTANCE
+RESOURCES = {
+    "Samsung Support": "https://www.samsung.com/africa_en/support/",
+    "Watu Pricing Chart": "Refer to internal PDF (V3.1)",
+    "GSPN Portal": "Authorized Access Only",
+    "G-Mail Recovery": "https://accounts.google.com/signin/recovery"
 }
