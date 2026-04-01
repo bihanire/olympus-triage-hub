@@ -1,4 +1,4 @@
-# HERMES: The Master Triage Glossary (v2.4 - Reliability Optimized)
+# HERMES: v2.5 - Official Protocol & Pricing Reference
 SAMSUNG_TRIAGE_DATA = {
     "Display & Touch (Top Tier Issue)": {
         "triggers": [
@@ -14,9 +14,9 @@ SAMSUNG_TRIAGE_DATA = {
             "4. PHYSICAL: Check for 'purple ink' spots (internal OLED bleed)."
         ],
         "routing": "No Physical Damage -> TRANSTEL (ASC) | Cracked -> Paid Repair",
-        "guidance": "Screen issues are our #1 volume. If hardware test fails without impact marks, reassure the client it is a manufacturing warranty matter."
+        "guidance": "Screen issues are the #1 volume. If hardware test fails without impact marks, reassure the client it is a warranty matter."
     },
-    "Power & Battery (Tier 1)": {
+    "Power, Battery & Charging (Tier 1)": {
         "triggers": [
             "battery", "drain", "fast", "percentage", "power", "dead", "won't turn on", 
             "black screen", "logo", "restart", "charging", "charger", "not charging",
@@ -30,7 +30,7 @@ SAMSUNG_TRIAGE_DATA = {
             "4. USAGE: Check Settings > Battery > Usage for rogue apps."
         ],
         "routing": "Perform at Branch / If unresponsive -> SIMU HQ",
-        "guidance": "Battery issues are high-volume. A hard reset or clearing background apps solves many 'dead' units immediately."
+        "guidance": "Battery drain is often software-related. A hard reset or clearing background apps solves many 'dead' units immediately."
     },
     "Software Updates & Network (Tier 2)": {
         "triggers": [
@@ -42,7 +42,7 @@ SAMSUNG_TRIAGE_DATA = {
         "action_plan": [
             "1. NETWORK RESET: Settings > General Management > Reset > Reset Network Settings.",
             "2. STORAGE: Verify at least 10GB of free space.",
-            "3. FACTORY RESET: If update persists in failing, perform a 'Reset to Factory Settings' (Back up data first!)."
+            "3. FACTORY RESET: If update persists in failing, reset to factory settings (Back up data first!)."
         ],
         "routing": "Perform at Branch / Escalate to SIMU HQ",
         "guidance": "Most update failures are Network-related. Always reset network settings before attempting the download again."
@@ -59,6 +59,8 @@ SAMSUNG_TRIAGE_DATA = {
         "guidance": "This is a standard software resolution. It is not a hardware fault."
     }
 }
+
+PRICING_SHEET_URL = "https://docs.google.com/spreadsheets/d/11iQdRXqFWxeNWVnscJ44bCF2sNK4jLLUfsQJO75509Y/edit?gid=1000331453#gid=1000331453"
 
 PROCEDURES = {
     "LDI Check": "Sticker in SIM slot: White = Dry. Red/Pink = Liquid contact confirmed.",
