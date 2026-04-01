@@ -1,4 +1,4 @@
-# HERMES: The Master Triage Glossary (v2.1 - Transtel & Battery Optimized)
+# HERMES: The Master Triage Glossary (v2.1 - Transtel Data Optimized)
 SAMSUNG_TRIAGE_DATA = {
     "Display & Touch (Top Tier Issue)": {
         "triggers": [
@@ -14,9 +14,9 @@ SAMSUNG_TRIAGE_DATA = {
             "4. PHYSICAL: Check for 'purple ink' spots (indicates internal OLED bleed)."
         ],
         "routing": "No Physical Damage -> TRANSTEL (ASC) | Cracked -> Paid Repair",
-        "guidance": "Screen issues are the #1 complaint. If hardware test fails without impact marks, reassure the client it is a warranty matter."
+        "guidance": "Screen issues are the #1 complaint. If the hardware test fails without impact marks, reassure the client it is a warranty matter."
     },
-    "Power, Battery & Charging (Tier 1)": {
+    "Power & Battery (Tier 1)": {
         "triggers": [
             "battery", "drain", "fast", "percentage", "power", "dead", "won't turn on", 
             "black screen", "logo", "restart", "charging", "charger", "not charging",
@@ -30,7 +30,7 @@ SAMSUNG_TRIAGE_DATA = {
             "4. USAGE: Check Settings > Battery > Usage for rogue apps."
         ],
         "routing": "Perform at Branch / If unresponsive -> SIMU HQ",
-        "guidance": "Battery drain is often software-related. A hard reset or clearing background apps solves many 'dead' units."
+        "guidance": "Battery issues are high-volume. A hard reset or clearing background apps solves many 'dead' units immediately."
     },
     "Software Updates & Network (Tier 2)": {
         "triggers": [
@@ -59,8 +59,8 @@ SAMSUNG_TRIAGE_DATA = {
     }
 }
 
-RESOURCES = {
-    "Samsung Support": "https://www.samsung.com/africa_en/support/",
-    "G-Mail Recovery": "https://accounts.google.com/signin/recovery",
-    "Support Email": "simurepairs@watu.africa" 
+PROCEDURES = {
+    "LDI Check": "Sticker in SIM slot: White = Dry. Red/Pink = Liquid contact confirmed.",
+    "Hardware Test": "Dial *#0*# in the phone app to access the Samsung internal testing suite.",
+    "Force Restart": "Hold Volume Down + Power simultaneously for 15 seconds until the logo appears."
 }
