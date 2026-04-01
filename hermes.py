@@ -1,6 +1,4 @@
-# HERMES: The Predictive Triage Logic Core
-# Focused on accurate warranty validation and regional routing.
-
+# HERMES: Predictive Triage Logic Core
 SAMSUNG_TRIAGE_DATA = {
     "Physical & Liquid Damage": {
         "triggers": [
@@ -14,21 +12,23 @@ SAMSUNG_TRIAGE_DATA = {
             "Refer to the Repair Pricing Chart for out-of-warranty costs."
         ],
         "routing": "Refer to TRANSTEL (ASC) - Paid Repair",
-        "guidance": "Acknowledge the situation with empathy. Explain that physical/liquid ingress voids the warranty and provide the estimated cost from the pricing chart."
+        "guidance": "Gently inform the customer that physical impact or liquid ingress voids the warranty. Provide the estimated cost from the pricing chart."
     },
-    "Power & Software Triage": {
+    "Power, Software & Security": {
         "triggers": [
             "power", "charging", "charger", "dead", "logo", "restart", "hang", 
-            "password", "lock", "frp", "pattern", "google", "account", "frozen", "slow", "off"
+            "password", "lock", "frp", "pattern", "google", "account", "frozen", 
+            "slow", "off", "software", "update", "download", "version", "upgrade", "system"
         ],
         "warranty_status": "Software Triage (In-Warranty Service)",
         "action_plan": [
             "Attempt a Force Restart: Hold Vol Down + Power for 15 seconds.",
-            "Inspect the Type-C port for lint, dust, or bent pins.",
+            "Check for available storage space (System updates require ~5GB free).",
+            "Ensure the device is connected to a stable Wi-Fi network (not mobile data).",
             "Verify device ownership and loan status in the finance system."
         ],
         "routing": "Perform at Branch / Escalate to SIMU HQ",
-        "guidance": "Assure the client we are performing a technical reset. This is often a software-related issue that can be resolved on-site to save them time."
+        "guidance": "Software issues and updates are usually handled on-site. Assure the client that we can resolve this without shipping the device if it's just a system glitch."
     },
     "Component & Technical Failure": {
         "triggers": [
