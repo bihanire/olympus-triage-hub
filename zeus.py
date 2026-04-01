@@ -1,72 +1,63 @@
 import streamlit as st
 import hermes
 
-st.set_page_config(page_title="Watu Technical Hub", layout="wide", page_icon="📱")
+st.set_page_config(page_title="Technical Hub", layout="wide")
 
 def main():
-    # PROFESSIONAL BANKER-WHITE UI
+    # CLEAN, MINIMALIST UI
     st.markdown("""
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        html, body, [class*="css"] { font-family: 'Inter', sans-serif; background-color: #FFFFFF !important; }
-        #MainMenu, footer, header {visibility: hidden;}
-        
-        .stTextInput > div > div > input {
-            border: 2px solid #0F172A !important; border-radius: 8px; padding: 1.2rem;
-            font-size: 1.2rem !important; font-weight: 600; color: #0F172A !important;
-        }
-
-        .sop-card {
-            background-color: #F8FAFC; padding: 2.5rem; border-radius: 12px;
-            border: 1px solid #E2E8F0; margin-top: 1.5rem;
-        }
-
-        .action-step {
-            background-color: #FFFFFF; border-left: 6px solid #2563EB;
-            padding: 1rem; margin-bottom: 10px; font-weight: 700; color: #1E293B !important;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-
-        .directive-box {
-            background-color: #FFFBEB; border: 1px solid #FEF3C7;
-            padding: 1rem; border-radius: 8px; color: #92400E !important; font-size: 0.95rem;
-        }
+        .main-panel { background-color: #FFFFFF; padding: 20px; border-radius: 8px; }
+        .side-panel { background-color: #F8FAFC; padding: 20px; border-left: 1px solid #E2E8F0; height: 100vh; }
+        .step-block { background-color: #F1F5F9; padding: 15px; border-radius: 5px; margin-bottom: 10px; font-weight: 500; }
+        .warning-box { background-color: #FFF7ED; border-left: 5px solid #EA580C; padding: 15px; color: #9A3412; margin-bottom: 20px; }
         </style>
-        """, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-    # BRANDING
-    st.markdown("<p style='font-weight: 800; color: #2563EB; letter-spacing: 0.2em; margin-bottom:0;'>WATU CREDIT LTD</p>", unsafe_allow_html=True)
-    st.markdown("<h1 style='font-weight: 800; color: #0F172A; margin-top:0; font-size: 3rem; letter-spacing: -0.05em;'>Technical Hub.</h1>", unsafe_allow_html=True)
+    st.subheader("Knowledge Repository")
+    
+    # LOAD DATA
+    index_df = hermes.fetch_vault_data()
+    
+    # SEARCH BAR
+    search_query = st.text_input("", placeholder="Search procedures, symptoms, or keywords...")
 
-    # GLOBAL SEARCH
-    query = st.text_input("", placeholder="Search SOPs or Symptoms (e.g. 'police abstract', 'frozen', 'water damage')").lower().strip()
-
-    if query:
-        found = False
-        for module, data in hermes.SAMSUNG_TRIAGE_DATA.items():
-            # SCAN EVERYTHING: Triggers + Action Steps + Guidance
-            search_pool = " ".join(data['triggers'] + data['action_plan'] + [data['guidance']]).lower()
-            
-            if query in search_pool:
-                found = True
-                col1, col2 = st.columns([2, 1])
-                with col1:
-                    st.markdown(f"### 📋 {module}")
-                    for step in data["action_plan"]:
-                        st.markdown(f"<div class='action-step'>✅ {step}</div>", unsafe_allow_html=True)
-                with col2:
-                    st.markdown("### 🔍 Details")
-                    st.info(f"**Status:** {data['status']}")
-                    st.markdown(f"<div class='directive-box'><b>📌 HQ GUIDANCE:</b><br>{data['guidance']}</div>", unsafe_allow_html=True)
-                    st.markdown("---")
-                    st.markdown(f"**Official Routing:**\n{data['routing']}")
-                    st.link_button("Price Matrix v3.1", hermes.PRICING_SHEET_URL)
-                st.markdown("---")
+    if search_query:
+        matches = hermes.find_context(search_query, index_df)
         
-        if not found:
-            st.error("No SOP match found. Check spelling or try a different keyword.")
-    else:
-        st.info("System Ready. Search above for Triage or SOP assistance.")
+        if not matches.empty:
+            active_sop = matches.iloc[0] # Best match
+            
+            col1, col2 = st.columns([2, 1])
+            
+            with col1:
+                st.markdown(f"## {active_sop['Procedure']}")
+                st.markdown(f"<div class='warning-box'><b>Note:</b> {active_sop['Critical_Note']}</div>", unsafe_allow_html=True)
+                
+                # Split steps by the pipe character
+                steps = str(active_sop['Operational_Steps']).split('|')
+                for step in steps:
+                    st.markdown(f"<div class='step-block'>• {step.strip()}</div>", unsafe_allow_html=True)
+            
+            with col2:
+                st.markdown("<div class='side-panel'>", unsafe_allow_html=True)
+                st.markdown("### Related Context")
+                
+                # THROW WIDE: Pulling the Linked Nodes
+                links = str(active_sop['Linked_Nodes']).split(',')
+                for node_id in links:
+                    node_data = index_df[index_df['REF_ID'] == node_id.strip()]
+                    if not node_data.empty:
+                        if st.button(f"🔗 {node_data.iloc[0]['Procedure']}", key=node_id):
+                            # This button could trigger a rerun with the new ID
+                            pass
+                
+                st.markdown("---")
+                if pd.notna(active_sop['Utility_Link']):
+                    st.link_button("Access External Tool", active_sop['Utility_Link'])
+                st.markdown("</div>", unsafe_allow_html=True)
+        else:
+            st.warning("No matching procedure found in the current index.")
 
 if __name__ == "__main__":
     main()
