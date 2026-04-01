@@ -1,17 +1,20 @@
-# HERMES v7.0 - THE RELATIONAL ENCYCLOPAEDIA
-# Traditional Logic: No AI, just Deep-Linked Context.
+import streamlit as st
+import pandas as pd
 
-KNOWLEDGE_BASE = {
-    "SCREEN_DAMAGE": {
-        "title": "Display & Touch Triage",
-        "content": ["Visual Audit", "LCD Code Test", "Price Matrix Quote"],
-        "context_links": ["WARRANTY_REJECTION", "MIFOS_LOAN_CHECK", "OUT_OF_WARRANTY_FEE"],
-        "keywords": ["cracked", "lines", "flicker", "ink", "smashed"]
-    },
-    "WARRANTY_REJECTION": {
-        "title": "Samsung Warranty Void Criteria",
-        "content": ["Check LCI (Liquid)", "Look for Dents", "Check Rooting Status"],
-        "context_links": ["SCREEN_DAMAGE", "LIQUID_DAMAGE"],
-        "keywords": ["void", "reject", "policy", "deny"]
-    }
-}
+# THE VAULT CONNECTOR
+def fetch_vault_data():
+    # Replace with your 'Published to Web' CSV link
+    vault_url = "YOUR_MASTER_INDEX_CSV_URL"
+    try:
+        df = pd.read_csv(vault_url)
+        return df
+    except Exception:
+        # Returns empty structure if link is broken
+        return pd.DataFrame(columns=["REF_ID", "Procedure", "Tags", "Operational_Steps", "Linked_Nodes", "Critical_Note", "Utility_Link"])
+
+def find_context(query, df):
+    query = query.lower()
+    # Scans Tags and Procedure names for matches
+    results = df[df.apply(lambda row: query in str(row['Tags']).lower() or 
+                                     query in str(row['Procedure']).lower(), axis=1)]
+    return results
