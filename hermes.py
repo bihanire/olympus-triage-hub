@@ -1,67 +1,70 @@
-# HERMES: v2.9 - High-Readability Logic
+# HERMES: v3.0 - The Universal Triage Engine (Master Build)
 SAMSUNG_TRIAGE_DATA = {
     "Display & Touch Module": {
         "triggers": [
             "lines", "unresponsive", "blurry", "touch", "sensing", "ghost", 
             "pixel", "color", "flicker", "dots", "black", "dim", "dark", "lcd",
             "screen", "display", "scren", "displey", "not showing", "bruised",
-            "cracked", "broken", "glass", "shattered", "ink", "bleeding", "patch"
+            "cracked", "broken", "glass", "shattered", "ink", "bleeding", "patch",
+            "white", "yellow", "faint", "faded", "double", "jumpy"
         ],
         "warranty_status": "Warranty Inspection Required (unless cracked)",
         "action_plan": [
-            "CLEAN: Wipe screen with microfiber (prevents ghost touch).",
-            "TEST: Dial *#0*# and run the 'TOUCH' grid test.",
-            "CALIBRATION: Check if a screen protector is affecting sensitivity.",
-            "PHYSICAL: Check for 'purple ink' spots (internal OLED bleed)."
+            "CLEAN: Use a microfiber cloth to wipe the screen (prevents ghost touch).",
+            "TEST: Dial *#0*# and run the 'TOUCH' grid test to verify dead zones.",
+            "CALIBRATION: Check if a screen protector or dirt is affecting sensitivity.",
+            "PHYSICAL: Inspect for 'purple ink' spots which indicate internal OLED bleed."
         ],
-        "routing": "No Physical Damage -> TRANSTEL (ASC) | Cracked -> Paid Repair",
-        "guidance": "Screen issues are the #1 volume. If the hardware test fails without impact marks, it is a warranty matter."
+        "routing": "No Physical Damage -> TRANSTEL (ASC) | Cracked/Bruised -> Paid Repair",
+        "guidance": "Display issues are high-value. If the hardware test fails but there are NO cracks, reassure the client it's a manufacturing warranty matter."
     },
-    "Power & Charging Module": {
+    "Power, Battery & Charging": {
         "triggers": [
             "battery", "drain", "fast", "percentage", "power", "dead", "won't turn on", 
             "black screen", "logo", "restart", "charging", "charger", "not charging",
             "heating", "warm", "swollen", "boot", "batery", "chargng", "chaging", 
-            "vibrates", "off", "shutdown", "cable", "port", "plugin"
+            "vibrates", "off", "shutdown", "cable", "port", "plugin", "slow", "fake"
         ],
-        "warranty_status": "L1 Triage Required",
+        "warranty_status": "L1 Branch Triage Required",
         "action_plan": [
-            "HARD RESET: Hold Vol Down + Power for 15-20 seconds.",
-            "CABLE TEST: Use a known good 25W Watu charger/cable.",
-            "PORT CHECK: Inspect for lint or bent pins in the Type-C port.",
-            "USAGE: Check Settings > Battery > Usage for rogue apps."
+            "HARD RESET: Hold Volume Down + Power for 15-20 seconds to force a reboot.",
+            "CABLE TEST: Use a known good 25W Watu charger and cable to rule out accessories.",
+            "PORT CHECK: Inspect for lint, dust, or bent pins in the Type-C port.",
+            "USAGE: Check Settings > Battery > Usage for rogue background apps."
         ],
-        "routing": "Perform at Branch / If unresponsive -> SIMU HQ",
-        "guidance": "Most charging issues are just dust in the port or a frozen software boot. Reset first."
+        "routing": "Perform at Branch first. If totally unresponsive -> SIMU HQ.",
+        "guidance": "Most charging issues are caused by dust in the port. Use a soft brush before declaring the port faulty."
     },
-    "Software & Network Module": {
+    "Software & System Performance": {
         "triggers": [
             "update", "software", "failed", "download", "upgrade", "version", 
             "system", "error", "processing", "package", "internet", "wi-fi", 
-            "network", "updat", "softwere", "firmware", "cannot update", "slow", "hanging"
+            "network", "updat", "softwere", "firmware", "cannot update", "slow", 
+            "hanging", "lag", "freezing", "apps", "playstore"
         ],
-        "warranty_status": "Software Triage (In-Warranty)",
+        "warranty_status": "Software Service (In-Warranty)",
         "action_plan": [
-            "NETWORK RESET: Settings > General Management > Reset > Reset Network Settings.",
-            "STORAGE: Verify at least 10GB of free space.",
-            "FACTORY RESET: If update persists in failing, reset to factory settings."
+            "NETWORK RESET: Go to Settings > General Management > Reset > Reset Network Settings.",
+            "STORAGE: Verify at least 10GB of free space for system stability.",
+            "FACTORY RESET: If updates persist in failing, perform a full reset (back up data first)."
         ],
-        "routing": "Perform at Branch / Escalate to SIMU HQ",
-        "guidance": "Always check the Wi-Fi signal before blaming the software."
+        "routing": "Branch Software Support / Escalate to SIMU HQ for Flashing.",
+        "guidance": "Network issues are often SIM-card or signal-related. Test with a different SIM if possible."
     },
-    "Security & Accounts Module": {
+    "Security, FRP & Accounts": {
         "triggers": [
             "password", "lock", "pattern", "forgot", "google", "frp", 
-            "account", "pin", "locked", "bypass", "gmail", "email", "signin"
+            "account", "pin", "locked", "bypass", "gmail", "email", "signin",
+            "verify", "credentials", "lost", "id"
         ],
-        "warranty_status": "L1 Software Service (HQ)",
+        "warranty_status": "L1 Software Service (HQ Exclusive)",
         "action_plan": [
-            "VERIFY: Check Watu loan status and client ID.",
-            "GSPN: Use authorized flashing tools for FRP/Lock removal.",
-            "MAINTENANCE: Enable Maintenance Mode to protect client privacy."
+            "VERIFY: Check Watu loan status and client Identity Document.",
+            "GSPN: Use authorized Samsung flashing tools for FRP/Lock removal.",
+            "PRIVACY: Enable Maintenance Mode before taking the device to protect data."
         ],
-        "routing": "SIMU HQ (Software Specialist)",
-        "guidance": "Standard software resolution. Verify the loan status before performing a bypass."
+        "routing": "SIMU HQ (Software Specialist Team)",
+        "guidance": "This is a standard L1 software resolution. Verify the loan is active/paid before bypassing."
     }
 }
 
