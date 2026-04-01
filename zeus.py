@@ -1,18 +1,11 @@
 import streamlit as st
 import hermes
-from st_gsheets_connection import GSheetsConnection
-import datetime
-import pandas as pd
 
-# 1. Page Configuration
+# Page Configuration
 st.set_page_config(page_title="Watu Triage Hub", layout="wide", page_icon="📱")
 
-# 2. Establish Google Sheets Connection
-# Ensure your Sheet URL is in Streamlit Cloud Secrets!
-conn = st.connection("gsheets", type=GSheetsConnection)
-
 def main():
-    # 3. Custom Styling
+    # Custom Styling
     st.markdown("""
         <style>
         .stApp { background-color: #f7f9fc; }
@@ -26,7 +19,7 @@ def main():
     
     with center:
         st.title("Level-1 Triage & Diagnosis Tool 🛠️ 😊")
-        st.caption("v2.3 Build | Standardizing Aftersales for Watu Branches")
+        st.caption("v2.4 Build | Standardizing Aftersales for Watu Branches")
         
         raw_input = st.text_input("", placeholder="Search: 'battery', 'lines', 'failed update'...")
         query = raw_input.lower().strip()
@@ -34,12 +27,10 @@ def main():
         if query:
             st.write("---")
             found = False
-            target_category = ""
             
             for category, data in hermes.SAMSUNG_TRIAGE_DATA.items():
                 if any(word in query for word in data["triggers"]):
                     found = True
-                    target_category = category
                     st.markdown("<div class='main-card'>", unsafe_allow_html=True)
                     st.subheader(f"🛠️ Assessment: {category}")
                     
@@ -68,25 +59,6 @@ def main():
 
             if not found:
                 st.warning("⚠️ Symptom not recognized. Manual physical inspection required. Contact HQ.")
-            
-            # --- GOOGLE SHEETS LOGGING LOGIC ---
-            try:
-                # Prepare the log row
-                log_row = pd.DataFrame([{
-                    "Timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "Symptom": query,
-                    "Result": target_category if found else "NOT_FOUND"
-                }])
-                
-                # Read existing data and append
-                existing_data = conn.read(worksheet="Sheet1")
-                updated_data = pd.concat([existing_data, log_row], ignore_index=True)
-                
-                # Push back to Google Sheets
-                conn.update(worksheet="Sheet1", data=updated_data)
-            except Exception as e:
-                # Silent fail so user doesn't see code errors
-                pass
 
         # --- THE CLEAN FOOTER ---
         st.markdown("<div class='footer'>Report an Issue / Complaint: @simurepairs</div>", unsafe_allow_html=True)
