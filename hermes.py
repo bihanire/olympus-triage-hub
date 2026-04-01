@@ -1,6 +1,6 @@
-# HERMES: v2.5 - Official Protocol & Pricing Reference
+# HERMES: v2.6 - The Minimalist Brain
 SAMSUNG_TRIAGE_DATA = {
-    "Display & Touch (Top Tier Issue)": {
+    "Display & Touch": {
         "triggers": [
             "lines", "unresponsive", "blurry", "touch", "sensing", "ghost", 
             "pixel", "color", "flicker", "dots", "black", "dim", "dark", "lcd",
@@ -16,7 +16,7 @@ SAMSUNG_TRIAGE_DATA = {
         "routing": "No Physical Damage -> TRANSTEL (ASC) | Cracked -> Paid Repair",
         "guidance": "Screen issues are the #1 volume. If hardware test fails without impact marks, reassure the client it is a warranty matter."
     },
-    "Power, Battery & Charging (Tier 1)": {
+    "Power & Battery": {
         "triggers": [
             "battery", "drain", "fast", "percentage", "power", "dead", "won't turn on", 
             "black screen", "logo", "restart", "charging", "charger", "not charging",
@@ -32,7 +32,7 @@ SAMSUNG_TRIAGE_DATA = {
         "routing": "Perform at Branch / If unresponsive -> SIMU HQ",
         "guidance": "Battery drain is often software-related. A hard reset or clearing background apps solves many 'dead' units immediately."
     },
-    "Software Updates & Network (Tier 2)": {
+    "Software & Network": {
         "triggers": [
             "update", "software", "failed", "download", "upgrade", "version", 
             "system", "error", "processing", "package", "internet", "wi-fi", 
@@ -47,7 +47,7 @@ SAMSUNG_TRIAGE_DATA = {
         "routing": "Perform at Branch / Escalate to SIMU HQ",
         "guidance": "Most update failures are Network-related. Always reset network settings before attempting the download again."
     },
-    "Security & Account Access": {
+    "Security & Accounts": {
         "triggers": ["password", "lock", "pattern", "forgot", "google", "frp", "account", "pin", "locked"],
         "warranty_status": "L1 Software Service (HQ)",
         "action_plan": [
@@ -61,9 +61,3 @@ SAMSUNG_TRIAGE_DATA = {
 }
 
 PRICING_SHEET_URL = "https://docs.google.com/spreadsheets/d/11iQdRXqFWxeNWVnscJ44bCF2sNK4jLLUfsQJO75509Y/edit?gid=1000331453#gid=1000331453"
-
-PROCEDURES = {
-    "LDI Check": "Sticker in SIM slot: White = Dry. Red/Pink = Liquid contact confirmed.",
-    "Hardware Test": "Dial *#0*# in the phone app to access the Samsung internal testing suite.",
-    "Force Restart": "Hold Volume Down + Power simultaneously for 15 seconds until the logo appears."
-}
