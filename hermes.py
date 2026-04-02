@@ -6,25 +6,30 @@ VAULT_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTTK8XlZZGtE9pD
 
 def load_vault():
     try:
+        # Pulling fresh data from the sheet
         df = pd.read_csv(VAULT_CSV_URL)
-        # SCRUB HEADERS: Removes hidden spaces like "Title " or " Tags"
+        
+        # CLEANUP: Remove hidden spaces in headers
         df.columns = df.columns.str.strip()
         
-        # Scrub Data: Clean up the content
-        df['REF_ID'] = df['REF_ID'].astype(str).str.strip()
-        df['Title'] = df['Title'].fillna("Untitled Procedure")
-        df['Tags'] = df['Tags'].fillna("")
-        df['Linked_Nodes'] = df['Linked_Nodes'].fillna("")
+        # Ensure critical columns are treated as strings to avoid errors
+        cols_to_fix = ['REF_ID', 'Title', 'Tags', 'Operational_Steps', 'Linked_Nodes']
+        for col in cols_to_fix:
+            if col in df.columns:
+                df[col] = df[col].astype(str).str.strip()
+        
+        # Fill empty cells to prevent crashes
+        df = df.fillna("")
         return df
     except Exception as e:
-        st.error(f"Vault Connection Error: {e}")
+        st.error(f"Vault Connection Offline: {e}")
         return pd.DataFrame()
 
 def search_index(query, df):
     query = query.lower().strip()
     if not query: return pd.DataFrame()
     
-    # SEARCH LOGIC: Scans the 'Title' and 'Tags' columns
+    # Global Search: Checks Title and Tags
     mask = (df['Title'].str.contains(query, case=False, na=False) | 
             df['Tags'].str.contains(query, case=False, na=False))
     return df[mask]
