@@ -2,76 +2,81 @@ import streamlit as st
 import hermes
 import pandas as pd
 
-st.set_page_config(page_title="L1 Triage Hub", layout="wide", page_icon="🛡️")
+st.set_page_config(page_title="Watu Triage Hub", layout="wide")
 
 def main():
-    # ELITE UI CUSTOM CSS (Coursera-Inspired)
+    # MINIMALIST "TECH-LOG" CSS
     st.markdown("""
         <style>
-        /* Main Background */
-        .stApp { background-color: #F9FAFB; }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(90deg, #1E293B 0%, #334155 100%);
-            padding: 40px;
+        /* Modern Font Stack */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        html, body, [class*="st-"] { font-family: 'Inter', sans-serif; }
+
+        .stApp { background-color: #FFFFFF; }
+
+        /* The Search Box - Clean & Centered */
+        .stTextInput input {
+            border-radius: 10px !important;
+            border: 1px solid #E2E8F0 !important;
+            padding: 15px !important;
+            font-size: 1.1rem !important;
+        }
+
+        /* The Main Result Card */
+        .result-container {
+            border: 1px solid #F1F5F9;
             border-radius: 20px;
-            color: white;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Modern Modern Card Style */
-        .sop-card {
+            padding: 40px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
             background: white;
-            padding: 25px;
-            border-radius: 16px;
-            border: 1px solid #E5E7EB;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s;
+            margin-top: 20px;
         }
-        .sop-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
 
-        /* Badge Styling */
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 0.75rem;
+        /* Status Badge for Legal Status */
+        .status-badge {
+            background: #EFF6FF;
+            color: #1D4ED8;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
             font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 10px;
+            display: inline-block;
+            margin-bottom: 15px;
         }
-        .badge-blue { background: #DBEAFE; color: #1E40AF; }
-        .badge-yellow { background: #FEF3C7; color: #92400E; }
 
-        /* Step Entry Styling */
-        .step-entry {
-            background: #F8FAFC;
-            border-left: 4px solid #3B82F6;
-            padding: 12px;
-            margin-bottom: 8px;
-            border-radius: 0 8px 8px 0;
-            color: #334155;
-            font-size: 0.95rem;
+        /* Steps - The "Coursera" Checklist Style */
+        .step-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #F1F5F9;
+            color: #475569;
+        }
+        .step-number {
+            background: #F1F5F9;
+            color: #64748B;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
         }
         </style>
     """, unsafe_allow_html=True)
 
-    # 1. HERO HEADER
-    st.markdown("""
-        <div class='hero'>
-            <h1 style='color: white; margin: 0;'>L1 Triage & Diagnosis Hub</h1>
-            <p style='color: #94A3B8; font-size: 1.1rem;'>The single source of truth for Aftersales Excellence</p>
-        </div>
-    """, unsafe_allow_html=True)
+    # HEADER
+    st.title("L1 Triage & Diagnosis Hub")
+    st.markdown("<p style='color: #64748B;'>Standardized Operating Procedures for Aftersales Excellence</p>", unsafe_allow_html=True)
 
     vault_df = hermes.load_vault()
 
     if not vault_df.empty:
-        # 2. SEARCH BAR (Modernized)
-        query = st.text_input("", placeholder="🔍 Search symptom (e.g., 'fundi', 'ink', 'arrears')...", label_visibility="collapsed")
+        # SEARCH
+        query = st.text_input("", placeholder="Search symptom or procedure (e.g. 'fundi', 'ink', 'arrears')...", label_visibility="collapsed")
 
         if query:
             results = hermes.search_index(query, vault_df)
@@ -79,51 +84,50 @@ def main():
             if not results.empty:
                 sop = results.iloc[0]
                 
-                col_main, col_side = st.columns([2.5, 1])
+                # TWO COLUMN LAYOUT
+                col_main, col_side = st.columns([2, 1])
                 
                 with col_main:
-                    # RENDER MAIN CONTENT AS A CARD
-                    st.markdown(f"""
-                        <div class='sop-card'>
-                            <span class='badge badge-blue'>Technical SOP</span>
-                            <h2>{sop.get('Title', 'No Title')}</h2>
-                            <hr style='margin: 20px 0; border: 0; border-top: 1px solid #E5E7EB;'>
-                            <div style='background: #FFFBEB; padding: 15px; border-radius: 12px; border: 1px solid #FEF3C7; margin-bottom: 20px;'>
-                                <strong style='color: #92400E;'>💡 LEGAL & FINANCIAL CONTEXT:</strong><br>
-                                <span style='color: #B45309;'>{sop.get('Admin_Note', 'No guidance provided.')}</span>
+                    st.markdown("<div class='result-container'>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='status-badge'>REF: {sop.get('REF_ID', 'N/A')}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<h1 style='margin:0;'>{sop.get('Title', 'Untitled')}</h1>", unsafe_allow_html=True)
+                    
+                    # Admin Guidance Box (Clean Yellow)
+                    note = sop.get('Admin_Note', '')
+                    if note:
+                        st.markdown(f"""
+                            <div style='background: #FFFBEB; padding: 20px; border-radius: 12px; margin: 25px 0;'>
+                                <strong style='color: #92400E;'>Legal & Financial Status:</strong><br>
+                                <span style='color: #B45309;'>{note}</span>
                             </div>
-                            <h4 style='color: #475569;'>Operational Steps</h4>
-                    """, unsafe_allow_html=True)
+                        """, unsafe_allow_html=True)
                     
-                    steps_raw = sop.get('Operational_Steps', '')
-                    for step in str(steps_raw).split('|'):
+                    # Workflow
+                    st.markdown("### Operational Steps")
+                    steps = str(sop.get('Operational_Steps', '')).split('|')
+                    for i, step in enumerate(steps):
                         if step.strip():
-                            st.markdown(f"<div class='step-entry'>{step.strip()}</div>", unsafe_allow_html=True)
-                    
+                            st.markdown(f"""
+                                <div class='step-item'>
+                                    <div class='step-number'>{i+1}</div>
+                                    <div>{step.strip()}</div>
+                                </div>
+                            """, unsafe_allow_html=True)
                     st.markdown("</div>", unsafe_allow_html=True)
-                
+
                 with col_side:
-                    # RELATED CONTEXT CARD
-                    st.markdown("<div class='sop-card'>", unsafe_allow_html=True)
-                    st.markdown("<h4 style='margin-top:0;'>Related Context</h4>", unsafe_allow_html=True)
+                    # Sidebar - "Wide Context"
+                    st.markdown("### Wide Context")
+                    related = hermes.get_linked_nodes(sop.get('Linked_Nodes', ''), vault_df)
+                    for item in related:
+                        st.button(f"🔗 {item['Title']}", key=item['REF_ID'], use_container_width=True)
                     
-                    linked_nodes_str = sop.get('Linked_Nodes', '')
-                    related_items = hermes.get_linked_nodes(linked_nodes_str, vault_df)
-                    
-                    if related_items:
-                        for item in related_items:
-                            # Using Streamlit info box for related links for better visibility
-                            st.info(f"🔗 **{item['Title']}**")
-                    
-                    st.markdown("<br>", unsafe_allow_html=True)
+                    st.markdown("---")
                     util_link = sop.get('Utility_Link', '')
-                    if util_link and util_link.strip() != "":
-                        st.link_button("🚀 Access Tools", util_link, use_container_width=True)
-                    st.markdown("</div>", unsafe_allow_html=True)
+                    if util_link:
+                        st.link_button("🚀 Access Master Sheet", util_link, use_container_width=True)
             else:
-                st.warning("No matches found. Try a different keyword.")
-    else:
-        st.error("Connection Offline.")
+                st.info("No matching procedure found. Try broader keywords.")
 
 if __name__ == "__main__":
     main()
