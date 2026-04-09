@@ -9,17 +9,14 @@ def load_vault():
         df.columns = [str(c).strip() for c in df.columns]
         for col in df.columns:
             df[col] = df[col].astype(str).replace(['nan', 'NaN', 'None'], '')
-        if 'REF_ID' in df.columns:
-            df['REF_ID'] = df['REF_ID'].str.upper().str.strip()
         return df
     except Exception as e:
-        st.error(f"Vault Offline: {e}")
+        st.error(f"Sync Error: {e}")
         return pd.DataFrame()
 
 def search_index(query, df):
     query = query.lower().strip()
     if not query or df.empty: return pd.DataFrame()
-    # Matches against Title and Tags
     mask = (df['Title'].str.contains(query, case=False, na=False) | 
             df['Tags'].str.contains(query, case=False, na=False))
     return df[mask]
