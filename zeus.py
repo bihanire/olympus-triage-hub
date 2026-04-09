@@ -2,131 +2,128 @@ import streamlit as st
 import hermes
 import pandas as pd
 
-# 1. PAGE CONFIGURATION
-st.set_page_config(
-    page_title="L1 Triage & Diagnosis LLM", 
-    layout="wide", 
-    page_icon="🛡️"
-)
+st.set_page_config(page_title="L1 Triage Hub", layout="wide", page_icon="🛡️")
 
 def main():
-    # 2. ELITE UI STYLING (High Contrast for Branch Visibility)
+    # ELITE UI CUSTOM CSS (Coursera-Inspired)
     st.markdown("""
         <style>
-        .stApp { background-color: #F1F5F9; }
+        /* Main Background */
+        .stApp { background-color: #F9FAFB; }
         
-        /* Main Procedure Card */
-        .main-card { 
-            background-color: #FFFFFF; 
-            padding: 30px; 
-            border-radius: 16px; 
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid #E2E8F0;
-            color: #1E293B !important;
-            margin-bottom: 20px;
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(90deg, #1E293B 0%, #334155 100%);
+            padding: 40px;
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-        
-        /* Header and Text Styling */
-        h1, h2, h3 { color: #0F172A !important; font-weight: 800 !important; }
-        .stMarkdown, p, span { color: #334155 !important; }
 
-        /* Step Entry Blocks */
-        .step-entry { 
-            background-color: #F8FAFC; 
-            border-left: 6px solid #2563EB; 
-            padding: 18px; 
-            margin-bottom: 12px; 
-            font-weight: 700; 
-            color: #0F172A !important;
+        /* Modern Modern Card Style */
+        .sop-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+        .sop-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+
+        /* Badge Styling */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .badge-blue { background: #DBEAFE; color: #1E40AF; }
+        .badge-yellow { background: #FEF3C7; color: #92400E; }
+
+        /* Step Entry Styling */
+        .step-entry {
+            background: #F8FAFC;
+            border-left: 4px solid #3B82F6;
+            padding: 12px;
+            margin-bottom: 8px;
             border-radius: 0 8px 8px 0;
-            font-size: 1.1rem;
-        }
-
-        /* Legal & Financial Warning Box */
-        .warning-box { 
-            background-color: #FEFCE8; 
-            border: 1px solid #FEF08A; 
-            padding: 20px; 
-            border-radius: 12px; 
-            color: #854D0E !important; 
-            font-size: 1rem;
-            margin-bottom: 25px;
-        }
-        
-        /* Sidebar Panel */
-        .side-panel {
-            background-color: #FFFFFF;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #E2E8F0;
+            color: #334155;
+            font-size: 0.95rem;
         }
         </style>
     """, unsafe_allow_html=True)
 
-    st.markdown("<h1 style='text-align: center;'>L1 Triage & Diagnosis Hub</h1>", unsafe_allow_html=True)
+    # 1. HERO HEADER
+    st.markdown("""
+        <div class='hero'>
+            <h1 style='color: white; margin: 0;'>L1 Triage & Diagnosis Hub</h1>
+            <p style='color: #94A3B8; font-size: 1.1rem;'>The single source of truth for Aftersales Excellence</p>
+        </div>
+    """, unsafe_allow_html=True)
 
-    # 3. LOAD DATA FROM HERMES
     vault_df = hermes.load_vault()
 
     if not vault_df.empty:
-        # SEARCH INTERFACE
-        query = st.text_input("", placeholder="🔍 Search symptom (e.g., 'fundi', 'ink', 'arrears', 'stolen')...", label_visibility="collapsed")
+        # 2. SEARCH BAR (Modernized)
+        query = st.text_input("", placeholder="🔍 Search symptom (e.g., 'fundi', 'ink', 'arrears')...", label_visibility="collapsed")
 
         if query:
             results = hermes.search_index(query, vault_df)
             
             if not results.empty:
-                # Get the top matching row
                 sop = results.iloc[0]
                 
-                # Create Layout: 70% Main Content, 30% Sidebar
-                col_main, col_side = st.columns([2.2, 1])
+                col_main, col_side = st.columns([2.5, 1])
                 
                 with col_main:
-                    st.markdown("<div class='main-card'>", unsafe_allow_html=True)
-                    st.markdown(f"<h2>{sop.get('Title', 'No Title')}</h2>", unsafe_allow_html=True)
+                    # RENDER MAIN CONTENT AS A CARD
+                    st.markdown(f"""
+                        <div class='sop-card'>
+                            <span class='badge badge-blue'>Technical SOP</span>
+                            <h2>{sop.get('Title', 'No Title')}</h2>
+                            <hr style='margin: 20px 0; border: 0; border-top: 1px solid #E5E7EB;'>
+                            <div style='background: #FFFBEB; padding: 15px; border-radius: 12px; border: 1px solid #FEF3C7; margin-bottom: 20px;'>
+                                <strong style='color: #92400E;'>💡 LEGAL & FINANCIAL CONTEXT:</strong><br>
+                                <span style='color: #B45309;'>{sop.get('Admin_Note', 'No guidance provided.')}</span>
+                            </div>
+                            <h4 style='color: #475569;'>Operational Steps</h4>
+                    """, unsafe_allow_html=True)
                     
-                    # Display Legal/Financial Note (Admin_Note)
-                    admin_note = sop.get('Admin_Note', '')
-                    if admin_note and admin_note.strip() != "":
-                        st.markdown(f"<div class='warning-box'><b>⚠️ LEGAL & FINANCIAL STATUS:</b><br>{admin_note}</div>", unsafe_allow_html=True)
-                    
-                    # Display Operational Steps
-                    st.markdown("### Operational Steps")
                     steps_raw = sop.get('Operational_Steps', '')
-                    if steps_raw:
-                        steps = str(steps_raw).split('|')
-                        for step in steps:
-                            if step.strip():
-                                st.markdown(f"<div class='step-entry'>• {step.strip()}</div>", unsafe_allow_html=True)
+                    for step in str(steps_raw).split('|'):
+                        if step.strip():
+                            st.markdown(f"<div class='step-entry'>{step.strip()}</div>", unsafe_allow_html=True)
+                    
                     st.markdown("</div>", unsafe_allow_html=True)
                 
                 with col_side:
-                    st.markdown("<div class='side-panel'>", unsafe_allow_html=True)
-                    st.markdown("### Related Context")
+                    # RELATED CONTEXT CARD
+                    st.markdown("<div class='sop-card'>", unsafe_allow_html=True)
+                    st.markdown("<h4 style='margin-top:0;'>Related Context</h4>", unsafe_allow_html=True)
                     
-                    # Fetch Linked Nodes for "Wide Thinking"
                     linked_nodes_str = sop.get('Linked_Nodes', '')
                     related_items = hermes.get_linked_nodes(linked_nodes_str, vault_df)
                     
                     if related_items:
                         for item in related_items:
+                            # Using Streamlit info box for related links for better visibility
                             st.info(f"🔗 **{item['Title']}**")
-                    else:
-                        st.write("No related procedures linked.")
                     
-                    st.markdown("---")
-                    
-                    # External Utility Links
+                    st.markdown("<br>", unsafe_allow_html=True)
                     util_link = sop.get('Utility_Link', '')
                     if util_link and util_link.strip() != "":
-                        st.link_button("🚀 Access Master Sheet/Form", util_link, use_container_width=True)
-                    
+                        st.link_button("🚀 Access Tools", util_link, use_container_width=True)
                     st.markdown("</div>", unsafe_allow_html=True)
             else:
-                st.warning("No matching SOP found. Try broader keywords like 'Repair' or 'Legal'.")
+                st.warning("No matches found. Try a different keyword.")
     else:
-        st.error("System Offline. Please ensure the Master Spreadsheet is accessible.")
+        st.error("Connection Offline.")
 
 if __name__ == "__main__":
     main()
